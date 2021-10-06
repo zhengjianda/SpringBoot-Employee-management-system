@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.luo.dao.EmployeeMapper">
+
+
+    <!-- 新增一个员工-->
+    <insert id="addEmployee" parameterType="com.luo.pojo.Employee">
+        insert into webtest.employee (id,Date,departmentId,email,gender,lastName) values (#{id},#{birth},#{department.id},#{email},#{gender},#{lastName})
+    </insert>
+
+    <!-- 更新一个员工-->
+    <update id="updateEmployee" parameterType="com.luo.pojo.Employee">
+        update webtest.employee set Date=#{birth},departmentId=#{department.id},email=#{email},gender=#{gender},lastName=#{lastName} where id=#{id}
+    </update>
+
+    <!-- 查询所有的员工-->
+    <select id="getAll" resultMap="empFindDept">
+        select * from webtest.employee
+    </select>
+
+    <resultMap id="empFindDept" type="com.luo.pojo.Employee">
+        <result property="id" column="id"/>
+        <result property="lastName" column="lastName"/>
+        <result property="email" column="email"/>
+        <result property="gender" column="gender"/>
+        <result property="birth" column="Date"/>
+
+        <!--复杂的属性部门，我们单独处理 -->
+        <association property="department" column="departmentId" javaType="com.luo.pojo.Department" select="getDept"/>
+
+    </resultMap>
+
+    <select id="getDept" resultType="com.luo.pojo.Department">
+        select * from webtest.department where id=#{id}
+    </select>
+
+
+
+    <!--通过id查询员工 -->
+    <select id="getEmployeeById" resultMap="empFindDept">
+        select * from webtest.employee where id=#{id}
+    </select>
+
+    <!-- 通过id删除员工-->
+    <delete id="delete">
+        delete from webtest.employee where id=#{id}
+    </delete>
+
+</mapper>
