@@ -26,7 +26,7 @@
     <show-object-properties value="true" />
     <loaded-nodes>
       <connection connection-id="3a8f6272-2cb7-4955-88a2-93c973b6ba2b">
-        <schema name="webtest" object-types="table, view, procedure, function, constraint, index, column, dataset trigger" />
+        <schema name="mybatis" object-types="table, view, procedure, function" />
       </connection>
     </loaded-nodes>
   </component>

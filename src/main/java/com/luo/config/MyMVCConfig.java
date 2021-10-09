@@ -20,16 +20,16 @@ package com.luo.config;
 public class MyMVCConfig implements WebMvcConfigurer {
 
         public void addViewControllers(ViewControllerRegistry registry){
-                registry.addViewController("/").setViewName("index");
+                //registry.addViewController("/").setViewName("index");
                 registry.addViewController("/index.html").setViewName("index");
-                registry.addViewController("/main.html").setViewName("dashboard");
+                //registry.addViewController("/main.html").setViewName("dashboard");
         }
 
-        // 添加拦截器
-        @Override
-        public void addInterceptors(InterceptorRegistry registry) {
-                registry.addInterceptor(new LoginHandlerInterceptor()).addPathPatterns("/**").excludePathPatterns("/index.html","/","/user/login","/css/**","/js/**","/img/**");
-        }
+//        // 添加拦截器
+//        @Override
+//        public void addInterceptors(InterceptorRegistry registry) {
+//                registry.addInterceptor(new LoginHandlerInterceptor()).addPathPatterns("/**").excludePathPatterns("/index.html","/","/user/login","/css/**","/js/**","/img/**");
+//        }
 
         //自定义的国际化组件生效
         @Bean

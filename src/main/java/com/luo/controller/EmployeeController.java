@@ -1,11 +1,14 @@
 package com.luo.controller;
 
-import com.luo.dao.DepartmentDao;
 import com.luo.dao.DepartmentMapper;
-import com.luo.dao.EmployeeDao;
 import com.luo.dao.EmployeeMapper;
 import com.luo.pojo.Department;
 import com.luo.pojo.Employee;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.IncorrectCredentialsException;
+import org.apache.shiro.authc.UnknownAccountException;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,6 +30,44 @@ public class EmployeeController {
     @Autowired
     DepartmentMapper departmentMapper;
 
+    //shiro 新增
+    @RequestMapping("/toLogin")
+    public String toLogin(){
+        System.out.println("返回首页");
+        return "index";
+    }
+
+    @RequestMapping("/login")
+    public String login(String username,String password,Model model){
+        //获得当前用户
+        System.out.println(username);
+        System.out.println(password);
+        Subject subject = SecurityUtils.getSubject();
+
+        //封装用户的登录数据
+        UsernamePasswordToken token=new UsernamePasswordToken(username,password);
+
+        try{
+            subject.login(token); //登录令牌 如果没有异常就说明ok
+            return "dashboard";
+        }catch (UnknownAccountException e){
+            //用户名不存在
+            model.addAttribute("msg","用户名不存在");
+            return "index";
+        }catch (IncorrectCredentialsException e){
+            //密码错误
+            model.addAttribute("msg","密码错误");
+            return "index";
+        }
+    }
+    @RequestMapping("/logout")
+    public String logout(){
+        System.out.println("退出登录");
+        return "redirect:/toLogin";
+
+    }
+
+    // shrio新增
 
     @RequestMapping("/emps")
     public String list(Model model){
@@ -38,9 +79,10 @@ public class EmployeeController {
     @GetMapping("/emp")  //这里是Get方法请求
     public String toAddpage(Model model){
         //首先查出所有部门的信息，传递给前端,让用户可以看到所有的可选择
+        System.out.println("成功地调用");
         List<Department> departments=departmentMapper.getDepartments();
         model.addAttribute("departments",departments);
-        return "emp/add";
+        return "/emp/add";
     }
 
     @PostMapping("/emp")
@@ -77,5 +119,9 @@ public class EmployeeController {
         //employeeDao.delete(id);
         employeeMapper.delete(id);
         return "redirect:/emps";
+    }
+    @RequestMapping("getdash")
+    public String getdash(){
+        return "dashboard";
     }
 }
