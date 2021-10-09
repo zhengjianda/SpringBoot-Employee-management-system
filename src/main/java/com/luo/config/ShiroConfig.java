@@ -30,9 +30,14 @@ public class ShiroConfig {
         //登录拦截
         Map<String,String> filterMap =new LinkedHashMap<>();
 
-        //filterMap.put("/dashboard","authc");
-       // filterMap.put("/logout","logout");
-        filterMap.put("/emp/add","authc");
+        //注销
+        filterMap.put("/logout","logout");
+
+        //登录拦截
+        filterMap.put("/emp","authc");
+        filterMap.put("/emps","authc");
+        filterMap.put("/delemp/*","authc");
+        filterMap.put("/emp/*","authc");
 
         bean.setFilterChainDefinitionMap(filterMap);
 

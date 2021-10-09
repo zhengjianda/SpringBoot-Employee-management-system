@@ -120,8 +120,4 @@ public class EmployeeController {
         employeeMapper.delete(id);
         return "redirect:/emps";
     }
-    @RequestMapping("getdash")
-    public String getdash(){
-        return "dashboard";
-    }
 }
